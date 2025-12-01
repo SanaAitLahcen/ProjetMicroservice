@@ -1,1 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SpringBoot:SpringBootSystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SpringBoot="platform:/resource/ProjetMicroservice/model/SpringBoot.ecore" name="ProductCatalogSystem">
+  <elements xsi:type="SpringBoot:Entity" name="Product" packageName="com.example.productcatalogsystem.entity" stereotype="@Entity" tableName="products">
+    <fields name="productId" type="INTEGER" columnName="productid" isId="true" unique="true" visibility="PRIVATE"/>
+    <fields name="name" columnName="name" length="255" visibility="PRIVATE"/>
+    <relations name="category" target="//@elements.7" type="MANY_TO_ONE" mappedBy="" cascade="CascadeType.ALL" fetchType="EAGER"/>
+  </elements>
+  <elements xsi:type="SpringBoot:Repository" name="ProductRepository" packageName="com.example.productcatalogsystem.repository" stereotype="@Repository" entity="//@elements.0"/>
+  <elements xsi:type="SpringBoot:DTO" name="ProductRequestDTO" packageName="com.example.productcatalogsystem.dto">
+    <fields name="name" type="STRING" nullable="false" validation="@NotNull" visibility="PRIVATE"/>
+  </elements>
+  <elements xsi:type="SpringBoot:DTO" name="ProductResponseDTO" packageName="com.example.productcatalogsystem.dto" type="RESPONSE">
+    <fields name="productId" type="INTEGER" nullable="false" validation="@NotNull" visibility="PRIVATE"/>
+    <fields name="name" type="STRING" nullable="false" validation="@NotNull" visibility="PRIVATE"/>
+  </elements>
+  <elements xsi:type="SpringBoot:Mapper" name="ProductMapper" packageName="com.example.productcatalogsystem.mapper" entity="//@elements.0" requestDTO="//@elements.2" responseDTO="//@elements.3"/>
+  <elements xsi:type="SpringBoot:Service" name="ProductService" packageName="com.example.productcatalogsystem.service" description="Service for Product operations" stereotype="@Service" repository="//@elements.1"/>
+  <elements xsi:type="SpringBoot:Controller" name="ProductController" packageName="com.example.productcatalogsystem.controller" stereotype="@RestController" basePath="/api/products" service="//@elements.5" mapper="//@elements.4">
+    <methods name="getProductById" path="/{id}" returnType="ResponseEntity&lt;ProductResponseDTO>">
+      <parameters name="id" type="Long"/>
+    </methods>
+    <methods name="getAllProducts" path="" returnType="ResponseEntity&lt;List&lt;ProductResponseDTO>>"/>
+    <methods name="createProduct" path="" method="POST" returnType="ResponseEntity&lt;ProductResponseDTO>">
+      <parameters name="request" type="ProductRequestDTO" paramType="REQUEST_BODY"/>
+    </methods>
+    <methods name="updateProduct" path="/{id}" method="PUT" returnType="ResponseEntity&lt;ProductResponseDTO>">
+      <parameters name="id" type="Long"/>
+      <parameters name="request" type="ProductRequestDTO" paramType="REQUEST_BODY"/>
+    </methods>
+    <methods name="deleteProduct" path="/{id}" method="DELETE" returnType="ResponseEntity&lt;Void>">
+      <parameters name="id" type="Long"/>
+    </methods>
+  </elements>
+  <elements xsi:type="SpringBoot:Entity" name="Category" packageName="com.example.productcatalogsystem.entity" stereotype="@Entity" tableName="categories">
+    <fields name="categoryId" type="INTEGER" columnName="categoryid" isId="true" unique="true" visibility="PRIVATE"/>
+    <fields name="name" columnName="name" length="255" visibility="PRIVATE"/>
+    <relations name="products" target="//@elements.0" type="ONE_TO_MANY" mappedBy="product" cascade="CascadeType.ALL"/>
+  </elements>
+  <elements xsi:type="SpringBoot:Repository" name="CategoryRepository" packageName="com.example.productcatalogsystem.repository" stereotype="@Repository" entity="//@elements.7"/>
+  <elements xsi:type="SpringBoot:DTO" name="CategoryRequestDTO" packageName="com.example.productcatalogsystem.dto">
+    <fields name="name" type="STRING" nullable="false" validation="@NotNull" visibility="PRIVATE"/>
+  </elements>
+  <elements xsi:type="SpringBoot:DTO" name="CategoryResponseDTO" packageName="com.example.productcatalogsystem.dto" type="RESPONSE">
+    <fields name="categoryId" type="INTEGER" nullable="false" validation="@NotNull" visibility="PRIVATE"/>
+    <fields name="name" type="STRING" nullable="false" validation="@NotNull" visibility="PRIVATE"/>
+  </elements>
+  <elements xsi:type="SpringBoot:Mapper" name="CategoryMapper" packageName="com.example.productcatalogsystem.mapper" entity="//@elements.7" requestDTO="//@elements.9" responseDTO="//@elements.10"/>
+  <elements xsi:type="SpringBoot:Service" name="CategoryService" packageName="com.example.productcatalogsystem.service" description="Service for Category operations" stereotype="@Service" repository="//@elements.8"/>
+  <elements xsi:type="SpringBoot:Controller" name="CategoryController" packageName="com.example.productcatalogsystem.controller" stereotype="@RestController" basePath="/api/categorys" service="//@elements.12" mapper="//@elements.11">
+    <methods name="getCategoryById" path="/{id}" returnType="ResponseEntity&lt;CategoryResponseDTO>">
+      <parameters name="id" type="Long"/>
+    </methods>
+    <methods name="getAllCategorys" path="" returnType="ResponseEntity&lt;List&lt;CategoryResponseDTO>>"/>
+    <methods name="createCategory" path="" method="POST" returnType="ResponseEntity&lt;CategoryResponseDTO>">
+      <parameters name="request" type="CategoryRequestDTO" paramType="REQUEST_BODY"/>
+    </methods>
+    <methods name="updateCategory" path="/{id}" method="PUT" returnType="ResponseEntity&lt;CategoryResponseDTO>">
+      <parameters name="id" type="Long"/>
+      <parameters name="request" type="CategoryRequestDTO" paramType="REQUEST_BODY"/>
+    </methods>
+    <methods name="deleteCategory" path="/{id}" method="DELETE" returnType="ResponseEntity&lt;Void>">
+      <parameters name="id" type="Long"/>
+    </methods>
+  </elements>
+</SpringBoot:SpringBootSystem>
 
