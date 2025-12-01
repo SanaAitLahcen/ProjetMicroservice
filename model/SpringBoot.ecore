@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="SpringBoot" nsURI="platform:/resource/ProjetMicroservice/model/SpringBoot.ecore"
+    nsPrefix="SpringBoot">
+  <eClassifiers xsi:type="ecore:EClass" name="SpringBootSystem">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//SpringBootElement" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="SpringBootElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true" eSuperTypes="#//SpringBootElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="packageName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="LayerComponent" abstract="true" eSuperTypes="#//Component">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stereotype" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Entity" eSuperTypes="#//LayerComponent">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tableName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hasAudit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
+        eType="#//EntityField" containment="true"/>
+    <!-- AJOUT: Relations JPA -->
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
+        eType="#//EntityRelation" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="EntityField" eSuperTypes="#//SpringBootElement">
+    <!-- MODIFIÉ: Utiliser l'énumération au lieu de String libre -->
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//FieldType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" eType="#//Visibility"/>
+  </eClassifiers>
+  
+  <!-- AJOUT: Relations entre entités JPA -->
+  <eClassifiers xsi:type="ecore:EClass" name="EntityRelation" eSuperTypes="#//SpringBootElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//Entity"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//RelationType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedBy" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascade" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetchType" eType="#//FetchType"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Repository" eSuperTypes="#//LayerComponent">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="idType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Long"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entity" lowerBound="1"
+        eType="#//Entity"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Service" eSuperTypes="#//LayerComponent">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transactional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="repository" lowerBound="1"
+        eType="#//Repository"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Controller" eSuperTypes="#//LayerComponent">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="basePath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="produces" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="application/json"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="service" lowerBound="1"
+        eType="#//Service"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="methods" upperBound="-1"
+        eType="#//ControllerMethod" containment="true"/>
+    <!-- AJOUT: Référence au Mapper utilisé -->
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapper" eType="#//Mapper"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="DTO" eSuperTypes="#//Component">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//DTOType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
+        eType="#//DTOField" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="DTOField" eSuperTypes="#//SpringBootElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="validation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" eType="#//Visibility"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="Mapper" eSuperTypes="#//Component">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entity" lowerBound="1"
+        eType="#//Entity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requestDTO" eType="#//DTO"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="responseDTO" eType="#//DTO"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="ControllerMethod" eSuperTypes="#//SpringBootElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="#//HttpMethod"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="returnType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//MethodParameter" containment="true"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EClass" name="MethodParameter" eSuperTypes="#//SpringBootElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="paramType" eType="#//ParameterType"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EEnum" name="ParameterType">
+    <eLiterals name="PATH_VARIABLE" value="0"/>
+    <eLiterals name="REQUEST_PARAM" value="1"/>
+    <eLiterals name="REQUEST_BODY" value="2"/>
+    <eLiterals name="REQUEST_HEADER" value="3"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EEnum" name="DTOType">
+    <eLiterals name="REQUEST" value="0"/>
+    <eLiterals name="RESPONSE" value="1"/>
+  </eClassifiers>
+  
+  <eClassifiers xsi:type="ecore:EEnum" name="HttpMethod">
+    <eLiterals name="GET" value="0"/>
+    <eLiterals name="POST" value="1"/>
+    <eLiterals name="PUT" value="2"/>
+    <eLiterals name="DELETE" value="3"/>
+    <eLiterals name="PATCH" value="4"/>
+  </eClassifiers>
+  
+  <!-- AJOUT: Énumération pour les types de champs -->
+  <eClassifiers xsi:type="ecore:EEnum" name="FieldType">
+    <eLiterals name="STRING" value="0"/>
+    <eLiterals name="INTEGER" value="1"/>
+    <eLiterals name="LONG" value="2"/>
+    <eLiterals name="DOUBLE" value="3"/>
+    <eLiterals name="FLOAT" value="4"/>
+    <eLiterals name="BOOLEAN" value="5"/>
+    <eLiterals name="DATE" value="6"/>
+    <eLiterals name="DATETIME" value="7"/>
+    <eLiterals name="BIGDECIMAL" value="8"/>
+    <eLiterals name="UUID" value="9"/>
+  </eClassifiers>
+  
+  <!-- AJOUT: Énumération pour le type de chargement JPA -->
+  <eClassifiers xsi:type="ecore:EEnum" name="FetchType">
+    <eLiterals name="LAZY" value="0"/>
+    <eLiterals name="EAGER" value="1"/>
+  </eClassifiers>
+  
+  <!-- AJOUT: Énumération pour les types de relations -->
+  <eClassifiers xsi:type="ecore:EEnum" name="RelationType">
+    <eLiterals name="ONE_TO_ONE" value="0"/>
+    <eLiterals name="ONE_TO_MANY" value="1"/>
+    <eLiterals name="MANY_TO_ONE" value="2"/>
+    <eLiterals name="MANY_TO_MANY" value="3"/>
+  </eClassifiers>
+  
+  <!-- CORRIGÉ: Harmonisé avec Microservice -->
+  <eClassifiers xsi:type="ecore:EEnum" name="Visibility">
+    <eLiterals name="PUBLIC" value="0"/>
+    <eLiterals name="PRIVATE" value="1"/>
+    <eLiterals name="PROTECTED" value="2"/>
+    <eLiterals name="PACKAGE_PRIVATE" value="3"/>
+  </eClassifiers>
+</ecore:EPackage>
